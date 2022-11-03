@@ -46,3 +46,43 @@ class TestVarasto(unittest.TestCase):
     def test_otetaan_enemman_kun_max(self):
         self.varasto.ota_varastosta(9999)
         self.assertAlmostEqual(self.varasto.saldo, 0)
+    
+    def test_ota_nolla(self):
+        self.varasto.lisaa_varastoon(2)
+        self.varasto.ota_varastosta(0)
+        self.assertAlmostEqual(self.varasto.saldo, 2)
+    
+    def test_otetaan_enemman_kun_max_pre(self):
+        self.varasto.lisaa_varastoon(22)
+        self.varasto.ota_varastosta(9999)
+        self.assertAlmostEqual(self.varasto.saldo, 0)
+    
+    def test_lisaa_nolla(self):
+        self.assertAlmostEqual(self.varasto.saldo, 0)
+    
+    def test_varasto_neg_koko(self):
+        v = Varasto(-5)
+        self.assertAlmostEqual(v.tilavuus, 0)
+    
+    def test_varasto_alkusaldo_isompi_kun_max(self):
+        v = Varasto(5, alku_saldo=6)
+        self.assertAlmostEqual(v.saldo, 5)
+    
+    def test_varasto_alkusaldo_neg(self):
+        v = Varasto(5, alku_saldo=-5)
+        self.assertAlmostEqual(v.saldo, 0)
+
+    def test_varasto_alkusaldo_ja_max_neg(self):
+        v = Varasto(-5, alku_saldo=-5)
+        self.assertAlmostEqual((v.saldo, v.tilavuus), (0, 0))
+
+    def test_str(self):
+        self.assertAlmostEqual(str(self.varasto), f"saldo = {self.varasto.saldo}, vielä tilaa {self.varasto.paljonko_mahtuu()}")
+    
+    def test_lisaa_neg(self):
+        self.varasto.lisaa_varastoon(-1)
+        self.assertAlmostEqual(self.varasto.tilavuus, 10)
+
+    def test_ota_neg(self):
+        self.varasto.ota_varastosta(-1)
+        self.assertAlmostEqual(self.varasto.tilavuus, 10)
